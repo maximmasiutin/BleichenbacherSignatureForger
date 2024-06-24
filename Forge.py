@@ -50,18 +50,18 @@ along with Bleichenbacher Signature Forger.  If not, see <https://www.gnu.org/li
 
 from argparse import ArgumentParser
 from sys import stdout, stderr, argv, exit
-from HashInfo import HASH_ASN1
-from SignatureForger import SignatureForger, toInt
+from HashInfoLib import HASH_ASN1
+from SignatureForgerLib import SignatureForger, to_int
 from base64 import b64encode
 from binascii import hexlify
 
-DefaultPublicExponent = 3
-DefaultFFcount = 1
-DefaultQuiet = False
-DefaultOutputFormat = "base64"
+DEFAULT_PUBLIC_EXPONENT = 3
+DEFAULT_FF_COUNT = 1
+DEFAULT_QUIET = False
+DEFAULT_OUTPUT_FORMAT = "base64"
 
 
-def printOutput(arg_signature, arg_format, arg_quiet):
+def print_formatted_signature(arg_signature, arg_format, arg_quiet):
 
     if not arg_quiet:
         print("****************************************************")
@@ -78,7 +78,7 @@ def printOutput(arg_signature, arg_format, arg_quiet):
     elif arg_format == "raw":
         stdout.buffer.write(arg_signature)
     elif arg_format == "decimal":
-        print(toInt(arg_signature))
+        print(to_int(arg_signature))
     else:
         print("Unknown output format specified " + arg_format, file=stderr)
 
@@ -86,7 +86,7 @@ def printOutput(arg_signature, arg_format, arg_quiet):
         print(binary_data.decode("ascii"))
 
 
-def getArguments():
+def parse_command_line_arguments():
     parser = ArgumentParser(
         description="Bleichenbacher Signature Forger. "
         + "Version 2.0. "
@@ -115,13 +115,13 @@ def getArguments():
         "--outputformat",
         type=str,
         choices=["decimal", "hex", "base64", "raw"],
-        default=DefaultOutputFormat,
+        default=DEFAULT_OUTPUT_FORMAT,
     )
     parser.add_argument("-m", "--message", type=str, required=True)
     parser.add_argument(
-        "-e", "--public-exponent", type=int, default=DefaultPublicExponent
+        "-e", "--public-exponent", type=int, default=DEFAULT_PUBLIC_EXPONENT
     )
-    parser.add_argument("-F", "--ffcount", type=int, default=DefaultFFcount)
+    parser.add_argument("-F", "--ffcount", type=int, default=DEFAULT_FF_COUNT)
     parser.add_argument("-q", "--quiet", action="store_true")
 
     if len(argv) == 1:
@@ -133,38 +133,38 @@ def getArguments():
     return ret_args
 
 
-args = getArguments()
+args = parse_command_line_arguments()
 
 quiet = args.quiet
 
 if quiet is None:
-    quiet = DefaultQuiet
+    quiet = DEFAULT_QUIET
 
 keySize = args.keysize
 hashAlg = args.hashalg
 ffcount = args.ffcount
 if ffcount is None:
-    ffcount = DefaultFFcount
+    ffcount = DEFAULT_FF_COUNT
 
 public_exponent = args.public_exponent
 if public_exponent is None:
-    public_exponent = DefaultPublicExponent
+    public_exponent = DEFAULT_PUBLIC_EXPONENT
 
 if public_exponent is None:
-    public_exponent = DefaultPublicExponent
+    public_exponent = DEFAULT_PUBLIC_EXPONENT
 
 if keySize is None:
     print("Please specify the key size", file=stderr)
     exit(1)
 
-signatureForger = SignatureForger(keySize, hashAlg, public_exponent, ffcount, quiet)
+signature_forger = SignatureForger(keySize, hashAlg, public_exponent, ffcount, quiet)
 
 signature = None
 
 if args.variant == 1:
-    signature = signatureForger.forgeSignature_method_garbage_end(args.message)
+    signature = signature_forger.forge_signature_with_garbage_end(args.message)
 elif args.variant == 2:
-    signature = signatureForger.forgeSignature_method_garbage_mid(args.message)
+    signature = signature_forger.forge_signature_with_garbage_mid(args.message)
 else:
     print(
         "Unsupported signature method. Choose '--variant 1' or '--variant 2'",
@@ -174,7 +174,7 @@ else:
 
 of = args.outputformat
 if of is None:
-    of = DefaultOutputFormat
+    of = DEFAULT_OUTPUT_FORMAT
 if signature is None:
     print("Cannot generate the signature.", end="", file=stderr)
     if (public_exponent <= 3) and (keySize < 4096):
@@ -182,4 +182,4 @@ if signature is None:
     print("", file=stderr)
     exit(2)
 else:
-    printOutput(signature, of, quiet)
+    print_formatted_signature(signature, of, quiet)

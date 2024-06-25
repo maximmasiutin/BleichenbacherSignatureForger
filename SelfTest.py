@@ -11,7 +11,7 @@ that the exponent matches (usually 3).
 
 
 
-This file is part of Bleichenbacher Signature Forger v2.0.
+This file is part of Bleichenbacher Signature Forger v2.1.
 
 Copyright 2021 Maxim Masiutin
 

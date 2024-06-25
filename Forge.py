@@ -6,7 +6,7 @@ passes them to a method of the "SignatureForger" class
 from the "SignatureForger.py".
 
 
-This file is part of Bleichenbacher Signature Forger v2.0.
+This file is part of Bleichenbacher Signature Forger v2.1.
 
 Copyright 2016 Filippo Valsorda
 Copyright 2017 Peter Hoeg Steffensen
@@ -33,6 +33,12 @@ History:
   - Added support for the SHA-224 hash
   - Implemented automatic unit tests
 
+- 2.1 (June 25th, 2024)
+  - Fixed typos in the readme and the messages given by the program
+  - Renamed files for meaningful names
+  - Renamed functions and methods for Python naming convention
+  - Added an appropriate message if the program cannot generate a signature
+  - Added primality test for public exponent
 
 Bleichenbacher Signature Forger is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -90,7 +96,7 @@ def print_formatted_signature(arg_signature, arg_format, arg_quiet):
 def parse_command_line_arguments():
     parser = ArgumentParser(
         description="Bleichenbacher Signature Forger. "
-        + "Version 2.0. "
+        + "Version 2.1. "
         + "This program demonstrates the vulenrability of the RSA PKCS1v1.5 and the attack when public exponent is small (e.g., 3) and the verification algorithm is not implemented properly."
     )
 

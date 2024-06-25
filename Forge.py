@@ -54,6 +54,7 @@ from HashInfoLib import HASH_ASN1
 from SignatureForgerLib import SignatureForger, to_int
 from base64 import b64encode
 from binascii import hexlify
+from gmpy2 import is_prime
 
 DEFAULT_PUBLIC_EXPONENT = 3
 DEFAULT_FF_COUNT = 1
@@ -149,9 +150,9 @@ if ffcount is None:
 public_exponent = args.public_exponent
 if public_exponent is None:
     public_exponent = DEFAULT_PUBLIC_EXPONENT
-
-if public_exponent is None:
-    public_exponent = DEFAULT_PUBLIC_EXPONENT
+if not is_prime(public_exponent):
+    print("Public exponent", public_exponent, "is not a prime number")
+    exit(1)
 
 if keySize is None:
     print("Please specify the key size", file=stderr)

@@ -2,7 +2,7 @@
 
 
 """
-This file is part of Bleichenbacher Signature Forger v2.0.
+This file is part of Bleichenbacher Signature Forger v2.1.
 
 Copyright 2016 Filippo Valsorda
 Copyright 2017 Peter Hoeg Steffensen

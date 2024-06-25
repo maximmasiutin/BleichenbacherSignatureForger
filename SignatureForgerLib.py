@@ -16,7 +16,7 @@ it gets the key, message and other arguments from the command line
 and prints the generated signature.
 
 
-This file is part of Bleichenbacher Signature Forger v2.0.
+This file is part of Bleichenbacher Signature Forger v2.1.
 
 Copyright 2016 Filippo Valsorda
 Copyright 2017 Peter Hoeg Steffensen

@@ -3,6 +3,7 @@
 
 """
 This file is part of Bleichenbacher Signature Forger v2.1.
+This is a library unit that provides ASN.1 paddings for hash algorithms
 
 Copyright 2016 Filippo Valsorda
 Copyright 2017 Peter Hoeg Steffensen

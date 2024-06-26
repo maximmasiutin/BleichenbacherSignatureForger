@@ -2,17 +2,17 @@
 
 
 """
-This file is a library unit that exposes the "SignatureForger" class
+This file is a library unit that exposes the "SignatureForger" class 
 with two main methods:
 "forge_signature_with_garbage_mid" and
 "forge_signature_with_garbage_end".
 
 You should specify the public key when initializing the class.
-Then call one of these methods with a message argument, and it will
+Then, call one of these methods with a message argument, and it will
 return a valid signature of the given message without having a private key.
 
 You can find the code that uses this class in the "Forge.py" module:
-it gets the key, message and other arguments from the command line
+it gets the key, message, and other arguments from the command line
 and prints the generated signature.
 
 
@@ -22,18 +22,19 @@ Copyright 2016 Filippo Valsorda
 Copyright 2017 Peter Hoeg Steffensen
 Copyright 2021 Maxim Masiutin
 
-Bleichenbacher Signature Forger is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+Bleichenbacher Signature Forger is free software: you can redistribute it
+and/or modify it under the terms of the GNU General Public License as
+published by the Free Software Foundation, either version 3 of the License,
+or (at your option) any later version.
 
-Bleichenbacher Signature Forger is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+Bleichenbacher Signature Forger is distributed in the hope that it will be
+useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with Bleichenbacher Signature Forger.  If not, see <https://www.gnu.org/licenses/>.
+along with Bleichenbacher Signature Forger.
+If not, see <https://www.gnu.org/licenses/>.
 """
 
 from sys import stderr, exit

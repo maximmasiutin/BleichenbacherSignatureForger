@@ -37,23 +37,23 @@ HASH_ASN1 = {
 
 class Hash:
     def __init__(self, hashAlg):
-        if hashAlg == "MD5":
-            self.digestInfo = HASH_ASN1[hashAlg]
-            self.digester = md5
-        elif hashAlg == "SHA-1":
-            self.digestInfo = HASH_ASN1[hashAlg]
-            self.digester = sha1
-        elif hashAlg == "SHA-224":
-            self.digestInfo = HASH_ASN1[hashAlg]
-            self.digester = sha224
-        elif hashAlg == "SHA-256":
-            self.digestInfo = HASH_ASN1[hashAlg]
-            self.digester = sha256
-        elif hashAlg == "SHA-384":
-            self.digestInfo = HASH_ASN1[hashAlg]
-            self.digester = sha384
-        elif hashAlg == "SHA-512":
-            self.digestInfo = HASH_ASN1[hashAlg]
-            self.digester = sha512
-        else:
-            raise Exception("Invalid hash algorithm identifier provided")
+	if hashAlg == "MD5":
+	    self.digestInfo = HASH_ASN1[hashAlg]
+	    self.digester = md5
+	elif hashAlg == "SHA-1":
+	    self.digestInfo = HASH_ASN1[hashAlg]
+	    self.digester = sha1
+	elif hashAlg == "SHA-224":
+	    self.digestInfo = HASH_ASN1[hashAlg]
+	    self.digester = sha224
+	elif hashAlg == "SHA-256":
+	    self.digestInfo = HASH_ASN1[hashAlg]
+	    self.digester = sha256
+	elif hashAlg == "SHA-384":
+	    self.digestInfo = HASH_ASN1[hashAlg]
+	    self.digester = sha384
+	elif hashAlg == "SHA-512":
+	    self.digestInfo = HASH_ASN1[hashAlg]
+	    self.digester = sha512
+	else:
+	    raise Exception("Invalid hash algorithm identifier provided")

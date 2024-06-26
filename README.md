@@ -29,11 +29,7 @@ $ python Forge.py --help
 
 usage: Forge.py [-h] [-k KEYSIZE] [-ha {MD5,SHA-1,SHA-256,SHA-384,SHA-512}] [-va {1,2}] [-of {decimal,hex,base64,raw}] [-m MESSAGE] [-e PUBLIC_EXPONENT] [-F FFCOUNT] [-q]
 
-<<<<<<< HEAD
-Bleichenbacher Signature Forger. Version 2.0. This program demonstrates the vulnerability of the RSA PKCS1v1.5 and the attack when the public exponent is small (e.g., 3) and the verification algorithm is not implemented correctly.
-=======
-Bleichenbacher Signature Forger. Version 2.1. This program demonstrates the vulnerability of the RSA PKCS1v1.5 and the attack when the public exponent is small (e.g., 3) and the verification algorithm is not implemented correctly.
->>>>>>> a798ccf4b58a7891cc9db4f02bdfa70d8c4d5818
+Bleichenbacher Signature Forger. Version 2.2. This program demonstrates the vulnerability of the RSA PKCS1v1.5 and the attack when the public exponent is small (e.g., 3) and the verification algorithm is not implemented correctly.
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -80,4 +76,6 @@ optional arguments:
   - Added an appropriate message if the program cannot generate a signature
   - Added primality test for public exponent
 
-
+- 2.2 (June 26th, 2024)
+  - Normalized spaces and tabs, and the long lines
+  - Updated the documentation (the file comments and the readme file)

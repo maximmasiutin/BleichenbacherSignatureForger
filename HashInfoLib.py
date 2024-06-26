@@ -2,25 +2,26 @@
 
 
 """
-This file is part of Bleichenbacher Signature Forger v2.1.
-This is a library unit that provides ASN.1 paddings for hash algorithms
+This file is part of Bleichenbacher Signature Forger v2.2.
+This is a library unit that provides ASN.1 paddings for hash algorithms.
 
 Copyright 2016 Filippo Valsorda
 Copyright 2017 Peter Hoeg Steffensen
 Copyright 2021 Maxim Masiutin
 
-Bleichenbacher Signature Forger is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+Bleichenbacher Signature Forger is free software: you can redistribute it
+and/or modify it under the terms of the GNU General Public License as
+published by the Free Software Foundation, either version 3 of the License,
+or (at your option) any later version.
 
-Bleichenbacher Signature Forger is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+Bleichenbacher Signature Forger is distributed in the hope that it will be
+useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with Bleichenbacher Signature Forger.  If not, see <https://www.gnu.org/licenses/>.
+along with Bleichenbacher Signature Forger.
+If not, see <https://www.gnu.org/licenses/>.
 """
 
 from hashlib import md5, sha1, sha224, sha256, sha384, sha512

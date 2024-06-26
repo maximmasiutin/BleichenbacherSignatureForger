@@ -6,7 +6,7 @@ passes them to a method of the "SignatureForger" class
 from the "SignatureForger.py".
 
 
-This file is part of Bleichenbacher Signature Forger v2.1.
+This file is part of Bleichenbacher Signature Forger v2.2.
 
 Copyright 2016 Filippo Valsorda
 Copyright 2017 Peter Hoeg Steffensen
@@ -23,13 +23,15 @@ History:
   - Added support for output formats
   - Added support for the public exponent command line parameter.
   - Dynamic precision adjustment for larger numbers
-  - The program exits with an appropriate message if it cannot generate a signature, rather than spinning in an endless loop
+  - The program exits with an appropriate message if it cannot generate a 
+    signature, rather than spinning in an endless loop
   - The option to specify the number of FF's
   - The "quiet" option
   - All error messages are printed to stderr
   - Approprite exit codes returned
   - Added module docstrings
-  - Proper "import" declarations that list only classes/functions which are actually imported
+  - Proper "import" declarations that list only classes/functions which
+    are actually imported
   - Added support for the SHA-224 hash
   - Implemented automatic unit tests
 
@@ -40,18 +42,23 @@ History:
   - Added an appropriate message if the program cannot generate a signature
   - Added primality test for public exponent
 
-Bleichenbacher Signature Forger is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+- 2.2 (June 26th, 2024)
+  - Normalized spaces and tabs, and the long lines
+  - Updated the documentation (the file comments and the readme file)
 
-Bleichenbacher Signature Forger is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+Bleichenbacher Signature Forger is free software: you can redistribute it
+and/or modify it under the terms of the GNU General Public License as
+published by the Free Software Foundation, either version 3 of the License,
+or (at your option) any later version.
+
+Bleichenbacher Signature Forger is distributed in the hope that it will be
+useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with Bleichenbacher Signature Forger.  If not, see <https://www.gnu.org/licenses/>.
+along with Bleichenbacher Signature Forger.
+If not, see <https://www.gnu.org/licenses/>.
 """
 
 from argparse import ArgumentParser
@@ -96,7 +103,7 @@ def print_formatted_signature(arg_signature, arg_format, arg_quiet):
 def parse_command_line_arguments():
     parser = ArgumentParser(
         description="Bleichenbacher Signature Forger. "
-        + "Version 2.1. "
+        + "Version 2.2. "
         + "This program demonstrates the vulenrability of the RSA PKCS1v1.5 and the attack when public exponent is small (e.g., 3) and the verification algorithm is not implemented properly."
     )
 

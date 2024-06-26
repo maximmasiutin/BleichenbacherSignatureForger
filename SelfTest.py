@@ -39,21 +39,21 @@ MESSAGE = "Test"
 
 def verify(variant, hash_alg, key_size, public_exponent):
     signatureForger = SignatureForger(
-	key_size, hash_alg, public_exponent, FFCOUNT, QUIET
+        key_size, hash_alg, public_exponent, FFCOUNT, QUIET
     )
     sbin = signatureForger.forgeSignature(MESSAGE, variant)
     suffix = signatureForger.encodePkcs1Suffix(MESSAGE)
     if sbin is None:
-	return False
+        return False
     s = toInt(sbin)
     o = pow(s, public_exponent)
     # Verify the signature
     # we do not need a modulus here since it should never wrap past the modulus
     obin = toBytes(o, (o.bit_length() + 7) // 8)
     if variant == 2:
-	return obin[-len(suffix) :] == suffix
+        return obin[-len(suffix) :] == suffix
     else:
-	return suffix in obin
+        return suffix in obin
 
 
 if (

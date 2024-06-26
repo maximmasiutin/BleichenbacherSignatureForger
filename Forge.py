@@ -71,69 +71,69 @@ DEFAULT_OUTPUT_FORMAT = "base64"
 def print_formatted_signature(arg_signature, arg_format, arg_quiet):
 
     if not arg_quiet:
-	print("****************************************************")
-	print("*         Signature successfully generated!        *")
-	print("****************************************************")
-	print("")
-	print("Signature:")
+        print("****************************************************")
+        print("*         Signature successfully generated!        *")
+        print("****************************************************")
+        print("")
+        print("Signature:")
 
     binary_data = None
     if arg_format == "base64":
-	binary_data = b64encode(arg_signature)
+        binary_data = b64encode(arg_signature)
     elif arg_format == "hex":
-	binary_data = hexlify(arg_signature)
+        binary_data = hexlify(arg_signature)
     elif arg_format == "raw":
-	stdout.buffer.write(arg_signature)
+        stdout.buffer.write(arg_signature)
     elif arg_format == "decimal":
-	print(to_int(arg_signature))
+        print(to_int(arg_signature))
     else:
-	print("Unknown output format specified " + arg_format, file=stderr)
+        print("Unknown output format specified " + arg_format, file=stderr)
 
     if binary_data is not None:
-	print(binary_data.decode("ascii"))
+        print(binary_data.decode("ascii"))
 
 
 def parse_command_line_arguments():
     parser = ArgumentParser(
-	description="Bleichenbacher Signature Forger. "
-	+ "Version 2.1. "
-	+ "This program demonstrates the vulenrability of the RSA PKCS1v1.5 and the attack when public exponent is small (e.g., 3) and the verification algorithm is not implemented properly."
+        description="Bleichenbacher Signature Forger. "
+        + "Version 2.1. "
+        + "This program demonstrates the vulenrability of the RSA PKCS1v1.5 and the attack when public exponent is small (e.g., 3) and the verification algorithm is not implemented properly."
     )
 
     parser.add_argument("-k", "--keysize", type=int, required=True)
     parser.add_argument(
-	"-ha",
-	"--hashalg",
-	action="store",
-	type=str,
-	choices=list(HASH_ASN1.keys()),
-	required=True,
+        "-ha",
+        "--hashalg",
+        action="store",
+        type=str,
+        choices=list(HASH_ASN1.keys()),
+        required=True,
     )
     parser.add_argument(
-	"-va",
-	"--variant",
-	type=int,
-	choices=[1, 2],
-	help="1 - 00 01 FF ... 00 ASN.1 HASH GarbageWithZeros;  2 - 00 01 FF NonzeroGarbage 00 ASN.1 HASH",
-	required=True,
+        "-va",
+        "--variant",
+        type=int,
+        choices=[1, 2],
+        help="1 - 00 01 FF ... 00 ASN.1 HASH GarbageWithZeros;  2 - 00 01 FF NonzeroGarbage 00 ASN.1 HASH",
+        required=True,
     )
     parser.add_argument(
-	"-of",
-	"--outputformat",
-	type=str,
-	choices=["decimal", "hex", "base64", "raw"],
-	default=DEFAULT_OUTPUT_FORMAT,
+        "-of",
+        "--outputformat",
+        type=str,
+        choices=["decimal", "hex", "base64", "raw"],
+        default=DEFAULT_OUTPUT_FORMAT,
     )
     parser.add_argument("-m", "--message", type=str, required=True)
     parser.add_argument(
-	"-e", "--public-exponent", type=int, default=DEFAULT_PUBLIC_EXPONENT
+        "-e", "--public-exponent", type=int, default=DEFAULT_PUBLIC_EXPONENT
     )
     parser.add_argument("-F", "--ffcount", type=int, default=DEFAULT_FF_COUNT)
     parser.add_argument("-q", "--quiet", action="store_true")
 
     if len(argv) == 1:
-	parser.print_help(stderr)
-	exit(1)
+        parser.print_help(stderr)
+        exit(1)
 
     ret_args = parser.parse_args()
 
@@ -175,8 +175,8 @@ elif args.variant == 2:
     signature = signature_forger.forge_signature_with_garbage_mid(args.message)
 else:
     print(
-	"Unsupported signature method. Choose '--variant 1' or '--variant 2'",
-	file=stderr,
+        "Unsupported signature method. Choose '--variant 1' or '--variant 2'",
+        file=stderr,
     )
     exit(1)
 
@@ -186,7 +186,7 @@ if of is None:
 if signature is None:
     print("Cannot generate the signature.", end="", file=stderr)
     if (public_exponent <= 3) and (keySize < 4096):
-	print(" (Key size is too small?)", end="", file=stderr)
+        print(" (Key size is too small?)", end="", file=stderr)
     print("", file=stderr)
     exit(2)
 else:

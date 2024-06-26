@@ -35,14 +35,12 @@ History:
   - Added support for the SHA-224 hash
   - Implemented automatic unit tests
 
-- 2.1 (June 25th, 2024)
+- 2.2 (June 26th, 2024)
   - Fixed typos in the readme and the messages given by the program
   - Renamed files for meaningful names
   - Renamed functions and methods for Python naming convention
   - Added an appropriate message if the program cannot generate a signature
   - Added primality test for public exponent
-
-- 2.2 (June 26th, 2024)
   - Normalized spaces and tabs, and the long lines
   - Updated the documentation (the file comments and the readme file)
 
